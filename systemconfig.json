@@ -1,0 +1,49 @@
+{
+ "device": {
+  "devicename": "Laptop",
+  "networkname": {
+   "ipv4": [
+    "127.0.0.1",
+    "localhost"
+   ],
+   "ipv6": [
+    "::1",
+    "localhost"
+   ]
+  }
+ },
+ "asset": {
+  "assetName": "clock"
+ },
+ "system": {
+  "systemname": "clock",
+  "address": "127.0.0.1",
+  "port": 7879,
+  "authentication": ".X509pubKey",
+  "protocol": [
+   "HTTP"
+  ]
+ },
+ "services": [
+  {
+   "servicedefinition": "Time",
+   "servicename": "timeService",
+   "path": "/time",
+   "metadata": {
+    "Location": "Luleå"
+   },
+   "version": "0.1"
+  }
+ ],
+ "coreSystems": [
+  {
+   "systemname": "ServiceRegistry",
+   "address": "http://localhost:4245/serviceregistry/register",
+   "port": 4245,
+   "authentication": ".X509pubKey",
+   "protocol": [
+    "HTTP"
+   ]
+  }
+ ]
+}
