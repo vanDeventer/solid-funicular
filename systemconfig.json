@@ -13,10 +13,10 @@
   }
  },
  "asset": {
-  "assetName": "clock"
+  "assetName": "serviceRegistry"
  },
  "system": {
-  "systemname": "clock",
+  "systemname": "serviceRegistry",
   "address": "127.0.0.1",
   "port": 7879,
   "authentication": ".X509pubKey",
