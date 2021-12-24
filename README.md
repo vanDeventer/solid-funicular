@@ -13,7 +13,7 @@ A system is made up of a system shell (this application) and an asset (e.g., sen
 
 ---
 ## The use cases
-The use case overview is the climate control local cloud consisting of the six systems.
+The [use case overview](Artwork/ModelingLocalClouds 2.pdf) is the climate control local cloud consisting of the six systems.
 
 The use cases for each system is
 
