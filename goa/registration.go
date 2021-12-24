@@ -6,8 +6,8 @@ package goa
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -16,34 +16,29 @@ import (
 func RegisterService(registrationForm RegistrationRequest) {
 	payload, errMarshal := json.MarshalIndent(registrationForm, "", " ")
 	if errMarshal != nil {
-		fmt.Println("Registration marshall error")
+		log.Println("Registration marshall error")
 	}
-	fmt.Printf("%+v\n", string(payload))
 	serviceRegistryURL := "http://127.0.0.1:4243/serviceregistry/register"
 	request, error := http.NewRequest("POST", serviceRegistryURL, bytes.NewBuffer(payload))
 	if error != nil {
-		fmt.Println(error)
+		log.Println(error)
 	}
+	defer request.Body.Close()
 	request.Header.Set("Content-Type", "application/json; charset=UTF-8")
-
 	client := &http.Client{}
 	response, error := client.Do(request)
 	if error != nil {
-		//panic(error)
-		fmt.Println(error)
+		log.Println(error)
 	} else {
-		defer response.Body.Close()
-
-		fmt.Println("response Status:", response.Status)
-		fmt.Println("response Headers:", response.Header)
+		log.Println("response Status:", response.Status)
+		log.Println("response Headers:", response.Header)
 		body, errRead := ioutil.ReadAll(response.Body)
 		if errRead != nil {
-			fmt.Print("error in reading registration payolad")
+			log.Print(errRead)
 		}
-		fmt.Println("response Body:", string(body))
+		log.Println("response Body:", string(body))
 		// need to unmarshall the resonse with RegistrationReply
 	}
-
 }
 
 // The Fill Registration Form function fills out the form structure that is used when registering a service
@@ -63,6 +58,7 @@ func FillRegistrationForm(asset Asset, system System, service Service) Registrat
 	return form
 }
 
+// To marshal or unmarshal a service registration, a struct is used based on the IDD of Service Registry
 type RegistrationRequest struct {
 	ServiceDefinition string `json:"serviceDefinition"`
 	ProviderSystem    struct {
@@ -79,6 +75,7 @@ type RegistrationRequest struct {
 	Interfaces    []string          `json:"interfaces"`
 }
 
+// To marshal or unmarshal a reply from a service registration, a struct is used based on the IDD of Service Registry
 type RegistrationReply struct {
 	ID                int `json:"id"`
 	ServiceDefinition struct {

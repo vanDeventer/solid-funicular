@@ -3,8 +3,8 @@ package goa
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -21,7 +21,7 @@ func Configure(device *Device, asset *Asset, system *System, services *[]Service
 	systemconfigfile, errOpen := os.Open("systemconfig.json")
 	// if we os.Open returns an error then handle it
 	if errOpen != nil { // could not find the systemconfig.json so a default one is being created
-		fmt.Println(errOpen)
+		log.Println(errOpen)
 
 		deviceDefaultConfig(device)
 		AssetDefaultConfig(asset)
@@ -32,34 +32,33 @@ func Configure(device *Device, asset *Asset, system *System, services *[]Service
 
 		systemconfigjson, errMarshal := json.MarshalIndent(payload, "", " ")
 		if errMarshal != nil {
-			fmt.Println("system marshall error")
+			log.Println(errMarshal)
 		}
 
 		systemconfigfile, err := os.Create("systemconfig.json")
 		if err != nil {
-			fmt.Println("Unable to create the system configuration file")
+			log.Fatalln(err)
 		}
 		defer systemconfigfile.Close()
 
 		nbytes, errWrite := systemconfigfile.Write(systemconfigjson)
 		if errWrite != nil {
-			fmt.Println("Unable to write to the system configuration file")
+			log.Fatalln(errWrite)
 		}
-		fmt.Printf("wrote %d bytes\n", nbytes)
+		log.Printf("wrote %d bytes\n", nbytes)
 	} else { // managed to open the existing systemconfig.json file
 		defer systemconfigfile.Close()
 		configBytes, errRead := ioutil.ReadAll(systemconfigfile)
 		if errRead != nil {
-			fmt.Println("Error reading")
+			log.Fatalln(errRead)
 		}
 
 		var payload configurationPayload
 		// extract device configuration
 		errUnmarshal := json.Unmarshal(configBytes, &payload)
 		if errUnmarshal != nil {
-			fmt.Println(errUnmarshal)
+			log.Fatalln(errUnmarshal)
 		} else {
-			fmt.Printf("%+v\n", payload.Device)
 			*device = payload.Device
 			*asset = payload.Asset
 			*system = payload.System

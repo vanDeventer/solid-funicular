@@ -30,7 +30,7 @@ func main() {
 	goa.Configure(&device, &asset, &system, &services, &coreSystems)
 
 	// Let the asset start to consume services, starting with the service registration, which is repeated every 10 seconds
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(5 * time.Second)
 	go func() {
 		for range ticker.C {
 			goa.RegisterService(goa.FillRegistrationForm(asset, system, services[0]))
