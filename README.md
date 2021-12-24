@@ -28,7 +28,7 @@ The Structs modeling the components of each system are at the heart of a collect
 The Main.go file is straight forward.
 The idea is to initialize the base components and then let the client and server part of the system shell handle the communications until the process (application) is killed.
 
-![ActivityDiagram](GoAActivityDiagram.png)
+![ActivityDiagram](Artwork/GoAActivityDiagram.png)
 
 ---
 ## Branches
